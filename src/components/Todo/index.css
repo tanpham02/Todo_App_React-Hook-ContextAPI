@@ -1,0 +1,12 @@
+.list-todos::-webkit-scrollbar {
+    height: 80%;
+    width: 5px;
+}
+.list-todos::-webkit-scrollbar-track {
+    background-color: #dbdbdb;
+    border-radius: 10px;
+}
+.list-todos::-webkit-scrollbar-thumb {
+    background-color: #949494;
+    border-radius: 10px;
+}
