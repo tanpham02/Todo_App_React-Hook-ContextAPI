@@ -27,10 +27,11 @@ export default function Todo({ todoLists }) {
   }
 
 
-
   useEffect(() => {
     dispatch(isCompleted(checked))
   }, [checked])
+
+
 
   useEffect(() => {
     if (todosRef.current.clientHeight > 190) {

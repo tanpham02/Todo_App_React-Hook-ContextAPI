@@ -25,6 +25,11 @@ export default function TodoList() {
     todoLists,
     filters
   } = todoState
+  const {
+    search,
+    status,
+    priorities
+  } = filters
 
   const [valuePrio, setValuePrio] = useState('Medium')
   const [todoName, setTodoName] = useState('')
@@ -32,11 +37,7 @@ export default function TodoList() {
   const { Option } = Select
   const { Group } = Input
   const [output, setOutput] = useState([])
-  const {
-    resultSearchs,
-    filterByPriority,
-    filterByStatus
-  } = filters
+
 
   const handleAddTodo = () => {
     dispatch(addTodo({
@@ -50,24 +51,42 @@ export default function TodoList() {
   }
 
   useEffect(() => {
-    setOutput(resultSearchs)
-  }, [resultSearchs])
+    const outputSearch = todoLists.filter(todo => todo.name.toLowerCase().includes(search.toLowerCase()))
+    if (outputSearch.length) {
+      setOutput(outputSearch)
+    }
+  }, [search])
+
+  useEffect(() => {
+    const outputStatus = todoLists.filter(todo => {
+      if (status === 'All') {
+        return todo
+      } else if (status === 'Completed') {
+        return todo.isCompleted
+      } else if (status === 'Todo') {
+        return !todo.isCompleted
+      }
+    })
+    if (outputStatus.length) {
+      setOutput(outputStatus)
+      return
+    }
+    setOutput(todoLists)
+  }, [status])
+
+  useEffect(() => {
+    const outputPriority = todoLists.filter(todo => priorities.includes(todo.priority))
+    if (outputPriority.length) {
+      setOutput(outputPriority)
+      return
+    }
+    setOutput(todoLists)
+  }, [priorities])
 
   useEffect(() => {
     setOutput(todoLists)
   }, [todoLists])
 
-  useEffect(() => {
-    if (filterByPriority.length) {
-      setOutput(filterByPriority)
-    } else {
-      setOutput(todoLists)
-    }
-  }, [filterByPriority])
-
-  useEffect(() => {
-    setOutput(filterByStatus)
-  }, [filterByStatus])
 
   useEffect(() => {
     localStorage.setItem('todoStorages', JSON.stringify(todoLists))

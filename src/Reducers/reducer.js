@@ -9,29 +9,23 @@ import {
 const initState = {
     todoLists: JSON.parse(localStorage.getItem('todoStorages')) ?? [],
     filters: {
-        resultSearchs: [],
-        filterByPriority: [],
-        filterByStatus: [],
-        status: {
-            All: 'all',
-            Completed: 'completed',
-            Todo: 'todo',
-        },
+        search: '',
+        priorities: [],
+        status: 'All',
     }
 }
 
 
 function todoAppReducer(state, action) {
     switch (action.type) {
-        case ADD_TODO: {
-
+        case ADD_TODO:
             return {
                 ...state,
                 todoLists: [...state.todoLists, action.payload]
             }
-        }
 
-        case IS_COMPLETED: {
+
+        case IS_COMPLETED:
             state.todoLists.filter((todo, index) => {
                 if (action.payload.includes(index)) {
                     todo.isCompleted = true
@@ -47,107 +41,40 @@ function todoAppReducer(state, action) {
                         todoLists: [...state.todoLists]
                     }
                 }
-
             })
             return {
                 ...state
             }
-        }
 
-        case SEARCH_TODO: {
-            const results = state.todoLists.filter(todo => todo.name.toLowerCase().includes(action.payload.toLowerCase()))
-            if (results.length) {
-                return {
-                    ...state,
-                    filters: {
-                        ...state.filters,
-                        resultSearchs: [...results]
-                    }
-                }
-            }
 
+        case SEARCH_TODO:
             return {
                 ...state,
                 filters: {
                     ...state.filters,
-                    resultSearchs: []
+                    search: action.payload
                 }
             }
-        }
 
-        case FILTER_BY_PRIORITY: {
-            const outputFilter = state.todoLists.filter(todo => action.payload.includes(todo.priority))
-            if (outputFilter.length) {
-                return {
-                    ...state,
-                    filters: {
-                        ...state.filters,
-                        filterByPriority: [...outputFilter]
-                    },
-                }
-            }
+
+        case FILTER_BY_PRIORITY:
             return {
                 ...state,
                 filters: {
                     ...state.filters,
-                    filterByPriority: []
+                    priorities: [...action.payload]
                 },
             }
-        }
 
-        case FILTER_BY_STATUS: {
-            if (state.filters.status[action.payload] === 'all') {
-                return {
-                    ...state,
-                    filters: {
-                        ...state.filters,
-                        filterByStatus: [...state.todoLists]
-                    },
-                }
-            } else if (state.filters.status[action.payload] === 'completed') {
-                const completed = state.todoLists.filter(todo => todo.isCompleted)
-                if (completed.length) {
-                    return {
-                        ...state,
-                        filters: {
-                            ...state.filters,
-                            filterByStatus: [...completed]
-                        },
-                    }
-                } else {
-                    return {
-                        ...state,
-                        filters: {
-                            ...state.filters,
-                            filterByStatus: []
-                        },
-                    }
-                }
-            } else if (state.filters.status[action.payload] === 'todo') {
-                const todos = state.todoLists.filter(todo => !todo.isCompleted)
-                if (todos.length) {
-                    return {
-                        ...state,
-                        filters: {
-                            ...state.filters,
-                            filterByStatus: [...todos]
-                        },
-                    }
-                } else {
-                    return {
-                        ...state,
-                        filters: {
-                            ...state.filters,
-                            filterByStatus: []
-                        },
-                    }
-                }
-            }
+
+        case FILTER_BY_STATUS:
             return {
                 ...state,
+                filters: {
+                    ...state.filters,
+                    status: action.payload
+                }
             }
-        }
-
 
         default:
             return {

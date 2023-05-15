@@ -25,9 +25,8 @@ export default function Filters() {
   const [valueSearch, setValueSearch] = useState('')
   const { Search } = Input
   const { Option } = Select
-  const { todoLists, filters } = todoState
-
-
+  const { filters } = todoState
+  const { status } = filters
 
 
   useEffect(() => {
@@ -67,6 +66,7 @@ export default function Filters() {
         </Typography.Paragraph>
         <Radio.Group
           onChange={handleFilterByStatus}
+          value={status}
         >
           <Radio value='All'>All</Radio>
           <Radio value='Completed'>Completed</Radio>
