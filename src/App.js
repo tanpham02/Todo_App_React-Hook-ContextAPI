@@ -21,7 +21,7 @@ function App() {
         overflowY: 'hidden'
       }}
     >
-      <Title style={{ textAlign: 'center' }}>TODO APP with React Hook Context API & Reducer</Title>
+      <Title style={{ textAlign: 'center' }}>TODO APP</Title>
       <Filters />
       <Divider />
       <TodoList />

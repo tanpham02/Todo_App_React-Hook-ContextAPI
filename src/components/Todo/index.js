@@ -2,7 +2,7 @@ import { Tag, Checkbox } from 'antd'
 import { useState, useContext, useEffect, useRef } from 'react'
 import { isCompleted } from '../../Reducers/actions'
 import { TodoAppContext } from '../../Context/TodoAppContext'
-import './index.css'
+
 
 const priorityColor = {
   High: 'red',
